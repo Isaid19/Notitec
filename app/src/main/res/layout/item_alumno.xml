@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cardview_light_background"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cvAlumno"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="5dp"
+        app:cardBackgroundColor="@color/cardview_light_background">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:orientation="horizontal">
+
+            <!--<ImageView
+                android:id="@+id/img1"
+                android:layout_width="121dp"
+                android:layout_height="match_parent"
+                app:srcCompat="@android:drawable/ic_menu_gallery" />-->
+
+            <LinearLayout
+                android:id="@+id/LinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingBottom="10sp"
+                android:paddingLeft="10sp"
+                android:paddingRight="10sp"
+                android:paddingTop="10sp">
+
+                <TextView
+                    android:id="@+id/lblDepartamento1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="5dp"
+                    android:text="Departamento"
+                    android:textColor="@android:color/black" />
+
+                <TextView
+                    android:id="@+id/lblEnlace1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autoLink="web"
+                    android:clickable="true"
+                    android:linksClickable="true"
+                    android:paddingBottom="5dp"
+                    android:text="Enlace"
+                    android:textColorLink="@android:color/holo_blue_dark" />
+
+                <TextView
+                    android:id="@+id/lblFecha1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="date"
+                    android:linksClickable="false"
+                    android:paddingBottom="5dp"
+                    android:text="Fecha"
+                    android:textColor="@android:color/black" />
+
+                <TextView
+                    android:id="@+id/lblDescripcion1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.00"
+                    android:inputType="textMultiLine"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:text="Descripcion"
+                    android:textColor="@android:color/black" />
+
+                <TextView
+                    android:id="@+id/lblCorreo1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autoLink="email"
+                    android:clickable="true"
+                    android:contextClickable="false"
+                    android:enabled="true"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:text="Correo electrónico"
+                    android:textIsSelectable="true" />
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autoLink="web"
+                    android:autoText="false"
+                    android:contextClickable="true"
+                    android:linksClickable="true"
+                    android:paddingTop="10sp"
+                    android:text="Comprobar correo:  https://www.verify-email.org/     "
+                    android:textColorLink="@android:color/holo_blue_dark"
+                    android:visibility="visible" />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

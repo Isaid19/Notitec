@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cardview_light_background"
+    android:orientation="vertical"
+    android:paddingLeft="10sp"
+    android:paddingRight="10sp"
+    android:paddingTop="10sp"
+    android:weightSum="1"
+    tools:context="com.example.juanisaid.notitec.CrearPublicacionActivity">
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Elige su Departamento"
+        android:textColor="@android:color/black"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:gravity="center"
+        android:text="..."
+        android:visibility="invisible" />
+
+    <Spinner
+        android:id="@+id/spinner2"
+        android:layout_width="match_parent"
+        android:layout_height="37dp" />
+
+    <EditText
+        android:id="@+id/editTextDescripcion"
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:ems="10"
+        android:hint="Descripción de la publicación, si desea mantenerse en contacto, favor de ingresar su correo."
+        android:inputType="textMultiLine" />
+
+    <EditText
+        android:id="@+id/editTextCorreo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:ems="10"
+        android:hint="ingrese un correo electrónico"
+        android:inputType="textEmailAddress" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autoLink="web"
+        android:autoText="false"
+        android:contextClickable="true"
+        android:linksClickable="true"
+        android:paddingBottom="10sp"
+        android:paddingLeft="5sp"
+        android:paddingTop="10sp"
+        android:text="Comprobar correo:  https://www.verify-email.org    "
+        android:textColorLink="@android:color/holo_blue_dark"
+        android:textSize="14sp"
+        android:visibility="visible" />
+
+    <EditText
+        android:id="@+id/editTextEnlace"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_weight="0.01"
+        android:ems="10"
+        android:hint="Link: ejemplo: www.facebook.com"
+        android:inputType="textMultiLine"
+        android:paddingBottom="15dp"
+        android:paddingTop="15dp"
+        android:textIsSelectable="false" />
+
+    <Button
+        android:id="@+id/btnEnviarPubicacion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_weight="0.05"
+        android:background="@color/colorAccent"
+        android:text="Enviar"
+        android:textColor="@color/colorAccent1"
+        android:textSize="14sp" />
+
+</LinearLayout>

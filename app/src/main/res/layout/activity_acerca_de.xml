@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cardview_light_background"
+    tools:context="com.example.juanisaid.notitec.AcercaDeActivity">
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="495dp"
+        android:paddingBottom="10sp"
+        android:paddingLeft="10sp"
+        android:paddingRight="10sp"
+        android:paddingTop="10sp"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="8dp">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="1dp"
+            android:orientation="vertical"
+            android:paddingLeft="5dp"
+            android:weightSum="1"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="8dp">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="360dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Descripción         "
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                tools:layout_editor_absoluteX="144dp"
+                tools:layout_editor_absoluteY="16dp" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:text="ITNLApp es una aplicación que permite a los directivos y miembros de un departamento a publicar anuncios o avisos hacia los estudiantes, esto con el fin de tener una comunicación de los hechos que ocurren a cada momento en el instituto."
+                android:textColor="@android:color/black"
+                app:layout_constraintBottom_toTopOf="@+id/textView4"
+                app:layout_constraintTop_toBottomOf="@+id/textView2"
+                app:layout_constraintVertical_bias="0.321"
+                tools:layout_editor_absoluteX="16dp" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="27dp"
+                android:layout_weight="0.44"
+                android:gravity="center"
+                android:text="Términos y condiciones de uso"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                tools:layout_editor_absoluteX="66dp"
+                tools:layout_editor_absoluteY="179dp" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="4.81"
+                android:text="Permisos de conexión a internet.\nPara esta aplicación es necesario que el usuario deba estar conectado a internet para enviar o recibir información de otro usuario. Se deberá de tener activado el permiso de dicha conexión para un mejor funcionamiento.\n\n
+Acceso de contactos.\nDentro de la aplicación los miembros de los departamentos, al registrarse, ingresarán un correo electrónico, puede ser el institucional o un correo propio, ya que será indispensable para la comunicación entre el alumno interesado y el usuario quien realiza la publicación. El uso de otro tipo de información de contacto, como lo es el número telefónico o cuentas de redes sociales, no se permitirá el ingreso de tales datos, debido a protección de cuentas del usuario con respecto a llamadas a celular o a cuentas de uso personal en internet.\n\n
+Contenido de las publicaciones.\nEl contenido de las aportaciones que hacen los usuarios registrados debe ser con motivos académicos, deportivos, culturales o sociales, y con fines de información hacia el estudiante. El desarrollador no se hace responsable por el contenido publicado por los usuarios.\n\n
+Uso de la aplicación.\nEl objetivo de la aplicación es meramente comunicativo sobre algún evento donde el estudiante pueda participar voluntariamente, en caso de estar interesado, podrá enviar un correo al autor de la nota y decir que ésta interesado, o bien, acudir al departamento de donde proviene el aviso. El desarrollador no se hace responsable por el uso inadecuado de la aplicación, como lo es, uso de carácter personal, enviar contenido inapropiado, redacción de mensajes con lenguaje vulgar u obsceno, o enviar notificaciones de eventos no programados o no autorizados por el personal directivo, docente o cualquier miembro del departamento, divulgar algún suceso que atente con la vida de las personas quienes interactúan con la app. En caso de contar con alguna de estas circunstancias, se deberá reportar con el personal apropiado de la institución y aplicar las sanciones correspondientes.\n\n
+"
+                android:textColor="@android:color/black"
+                tools:layout_editor_absoluteX="16dp"
+                tools:layout_editor_absoluteY="269dp" />
+
+
+        </LinearLayout>
+    </ScrollView>
+</android.support.constraint.ConstraintLayout>
