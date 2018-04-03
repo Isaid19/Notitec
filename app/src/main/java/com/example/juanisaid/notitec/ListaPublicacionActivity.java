@@ -22,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 //import com.loopj.android.http.HttpGet;
@@ -40,12 +41,14 @@ public class ListaPublicacionActivity extends AppCompatActivity
 {
     private ListView Lv;
     private Button EnviarCorreo;
+    private TextView Pag;
     Context context;
     ArrayAdapter<String> adapter;
     ArrayList<String> data;
-    //String cadenaApi = "http://192.168.1.71/PublicWebServiceRest1/Api/Publicaciones";
+    //String cadenaApi = "http://192.168.1.76/PublicWebServiceRest1/Api/Publicaciones";
     String cadenaApi = "http://core.itnuevolaredo.edu.mx/notitec/Api/Publicaciones";
     String correoCopiado;
+    String pagina;
 //https://geekytheory.com/trabajando-con-json-en-android/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +57,7 @@ public class ListaPublicacionActivity extends AppCompatActivity
 
         //data = new ArrayList<String>();
         Lv = (ListView) findViewById(R.id.lv);
+
         context = this;
 
         //adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, data);
@@ -65,7 +69,8 @@ public class ListaPublicacionActivity extends AppCompatActivity
         //tarea.execute();
 
         EnviarCorreo = (Button) findViewById(R.id.btnEnviarCorreo);
-
+        Pag = (TextView) findViewById(R.id.tvPagina);
+        Pag.setText("Ir a la página: "+pagina);
         EnviarCorreo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,6 +104,7 @@ public class ListaPublicacionActivity extends AppCompatActivity
     {
 		private String[] notas;
         public List<String> notasListaCorreos = new ArrayList<String>();
+        public List<String> notasListaPaginas = new ArrayList<String>();
         public List<String> notasListaPub = new ArrayList<String>();
 	    protected Boolean doInBackground(String... params)
 	    {
@@ -114,6 +120,7 @@ public class ListaPublicacionActivity extends AppCompatActivity
 	        	notas = new String[respJSON.length()];
                 notasListaCorreos = new ArrayList<String>(respJSON.length());
                 notasListaPub = new ArrayList<String>(respJSON.length());
+                notasListaPaginas = new ArrayList<String>(respJSON.length());
 	        	for(int i=0; i<respJSON.length(); i++)
 	        	{
 	        		JSONObject obj = respJSON.getJSONObject(i);
@@ -123,8 +130,9 @@ public class ListaPublicacionActivity extends AppCompatActivity
                     String fecha = obj.getString("Fecha");
                     String correo = obj.getString("CorreoElectronico");
 	        		notas[i] = "\n" + depa + "\n"+ "\n" + desc + "\n"+ "\n" + link + "\n"+ "\n" + fecha + "\n"+ "\n" + correo +"\n";
-                    notasListaPub.add(""+desc);
+                    notasListaPub.add("" + desc);
                     notasListaCorreos.add(""+ correo);
+                    notasListaPaginas.add(""+ link);
                     //correoCopiado = notasListaCorreos.set(i,correo);
 	        	}
 	        }
@@ -154,6 +162,7 @@ public class ListaPublicacionActivity extends AppCompatActivity
                     {
                         Toast.makeText(ListaPublicacionActivity.this, "Copiado: " + notasListaCorreos.get(position), Toast.LENGTH_LONG).show();
                         correoCopiado = notasListaCorreos.get(position);
+                        pagina = notasListaPaginas.get(position);
                     }
                 });
 	    	}

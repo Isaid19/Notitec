@@ -1,4 +1,4 @@
-package mx.edu.com.nld.tecnologico.apptecnologico.Login.Model;
+package com.example.juanisaid.notitec.LoginAzure.Model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

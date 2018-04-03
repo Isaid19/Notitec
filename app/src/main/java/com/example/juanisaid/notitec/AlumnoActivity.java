@@ -1,10 +1,12 @@
 package com.example.juanisaid.notitec;
 
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.StrictMode;
+import android.service.voice.VoiceInteractionSession;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,7 +21,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-
+import org.apache.http.HttpClientConnection;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -50,13 +52,14 @@ public class AlumnoActivity extends AppCompatActivity {
     private RecyclerViewAdaptador1 adaptadorPublicacion1;
     private Button EnviarCorreo;
     Context context;
-    String cadenaApi = "http://10.10.21.249/RealWebServiceRest/Api/Publicaciones";
+    String cadenaApi = "http://192.168.1.76/PublicWebServiceRest1/Api/Publicaciones";
     //private Button WebView;
     ArrayAdapter<String> adapter;
     //ArrayList<PublicacionModelo> dataListAlumno;
     //ArrayList<String> dataListAlumno;
     //List<String> data;
     List<AlumnoModelo> dataListAlumno;
+    JSONParser jParser= new JSONParser();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,8 +95,8 @@ public class AlumnoActivity extends AppCompatActivity {
         recyclerViewPublicacion1.setLayoutManager(new LinearLayoutManager(this));
         //recyclerViewPublicacion1.setAdapter(adapter);
         //mostrar.onPostExecute(dataListAlumno);
-
-        adaptadorPublicacion1 = new RecyclerViewAdaptador1(getPub());
+        new TareaWSListar1().execute();
+        adaptadorPublicacion1 = new RecyclerViewAdaptador1(dataListAlumno);
         recyclerViewPublicacion1.setAdapter(adaptadorPublicacion1);
         EnviarCorreo = (Button) findViewById(R.id.btnEnviarCorreo);
 
@@ -172,6 +175,7 @@ public class AlumnoActivity extends AppCompatActivity {
             //for (int i = 0; i< publicacionModelos.size(); i++) { data.(publicacionModelos.get(i).getDepartamento() + " " + result.get(i).getName()); }
         }
     }
+
     public List<AlumnoModelo> parseAlu(JSONObject object)
     {
         List<AlumnoModelo> arrayListAlu= new ArrayList<AlumnoModelo>();
@@ -243,6 +247,45 @@ public class AlumnoActivity extends AppCompatActivity {
          }
      }
 
+
+    private class Listar extends AsyncTask<String,String,String>
+    {
+
+        @Override
+        protected String doInBackground(String... params) {
+            HttpClient httpClient = new DefaultHttpClient();
+            org.apache.http.client.methods.HttpGet del = new org.apache.http.client.methods.HttpGet(cadenaApi);
+            del.setHeader("content-type", "application/json");
+            dataListAlumno = new ArrayList<>();
+            try
+            {
+                HttpResponse resp = httpClient.execute(del);
+                String respStr = EntityUtils.toString(resp.getEntity());
+                JSONArray respJSON = new JSONArray(respStr);
+
+                for(int i=0; i<respJSON.length(); i++)
+                {
+                    JSONObject obj = respJSON.getJSONObject(i);
+                    String depa = obj.getString("Departamento");
+                    String desc = obj.getString("Descripcion");
+                    String link = obj.getString("Enlace");
+                    String fecha = obj.getString("Fecha");
+                    String correo = obj.getString("CorreoElectronico");
+
+                    //dataListAlumno.add(depa,desc,link,fecha,correo);
+                    //correoCopiado = notasListaCorreos.set(i,correo);
+                }
+            }
+
+            catch(Exception ex)
+            {
+                Log.e("ServicioRest","Error!", ex);
+
+                Toast.makeText(getApplicationContext(),"Error desde el AsyncTask" + ex.getMessage(),Toast.LENGTH_SHORT).show();
+            }
+            return null;
+        }
+    }
 
 
     //Ejemplo de como mostrar la publicación

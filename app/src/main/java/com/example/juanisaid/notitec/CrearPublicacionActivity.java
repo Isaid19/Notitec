@@ -95,12 +95,25 @@ public class CrearPublicacionActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-
                 String departamento = Departamento.getText().toString();
                 String descripcion = Descripcion.getText().toString();
                 String enlace=Enlace.getText().toString();
                 String fecha = getDateTime();
                 String email = Correo.getText().toString();
+
+                boolean cancel = false;
+                View focusView = null;
+                if (!isEmailValid(email)) {
+                    Correo.setError(getString(R.string.error_invalid_email));
+                    focusView = Correo;
+                    cancel = true;
+                }
+                if (cancel) {
+                    // There was an error; don't attempt login and focus the first
+                    // form field with an error.
+                    focusView.requestFocus();
+                }
+
                 //email = dato;
                 //int foto=Foto.getImageAlpha();
 
@@ -108,7 +121,7 @@ public class CrearPublicacionActivity extends AppCompatActivity
                         descripcion, enlace,fecha,email);
                 new AsyncCrearPublicacion().execute(userDetail);
                 //new WSInsertar().execute(departamento,descripcion,enlace,email);
-                if(validarEmail(email)==true || email == "") {
+                //if(validarEmail(email)==true || email == "") {
                     //new WSInsertar().execute(departamento,descripcion,enlace,email);
                     //agregarUsuario();
 
@@ -135,17 +148,23 @@ public class CrearPublicacionActivity extends AppCompatActivity
                     mNotifyMgr.notify(notificationId, mBuilder.build());
                     //mBuilder = new NotificationCompat.Builder(getApplicationContext());*/
 
-                }
+                /*}
                 else
                 {
                     Toast.makeText(getApplicationContext(),"Correo no aceptado",Toast.LENGTH_LONG).show();
-                }
+                }*/
 
 
             }
         });
 
     }
+
+    private boolean isEmailValid(String email) {
+        //TODO: Replace this with your own logic
+        return email.contains("@");
+    }
+
     public static boolean validarEmail(String email){
 
         boolean isValid = false;
@@ -233,7 +252,7 @@ public class CrearPublicacionActivity extends AppCompatActivity
 
             HttpClient httpClient = new DefaultHttpClient();
 
-            HttpPost post = new HttpPost("http://192.168.1.71/PublicWebServiceRest1/Api/Publicaciones/Publicacion");
+            HttpPost post = new HttpPost("http://192.168.1.76/PublicWebServiceRest1/Api/Publicaciones/Publicacion");
 
             //HttpPost post = new HttpPost("http://core.itnuevolaredo.edu.mx/notitec/Api/Publicaciones/Publicacion");
             post.setHeader("content-type", "application/json");
@@ -297,6 +316,7 @@ public class CrearPublicacionActivity extends AppCompatActivity
 
                 mNotifyMgr.notify(notificationId, mBuilder.build());
                 //mBuilder = new NotificationCompat.Builder(getApplicationContext());
+                finish();
             }
         }
     }

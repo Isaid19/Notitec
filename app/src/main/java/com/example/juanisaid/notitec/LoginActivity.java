@@ -60,7 +60,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private UserLoginTask mAuthTask = null;
-
+    private String[] claves = {"24447","67312","33979","01527","25641","08662"
+                              ,"18823","76780","60389","45409","85865","25581"
+                              ,"96178","80958","81726","40166","91734","85242"
+                              ,"81394","74744","07250","57499","83615","41782"};
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView, Clave;
@@ -97,18 +100,26 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(), ListaPublicacionesUsuariosActivity.class);
+                /*Intent i = new Intent(getApplicationContext(), ListaPublicacionesUsuariosActivity.class);
                 ///i.putExtra("correo",correoElectronico.getText().toString());
-                startActivity(i);
-                Toast.makeText(getApplicationContext(), "Bienvenido ",Toast.LENGTH_SHORT).show();
-                 /*if(Clave.getText().toString()=="1234")
-                 {
-                     attemptLogin();
-                 }
-                 else
-                     {
-                         Toast.makeText(getApplicationContext(), "Clave Incorrecta ",Toast.LENGTH_SHORT).show();
-                     }*/
+                startActivity(i);*/
+                boolean estaelnumero = false;
+                int x;
+                for (x=0;x<claves.length;x++)
+                {
+                    //if(clave)
+                    if(claves[x].equals(Clave.getText().toString()))
+                    {
+                        estaelnumero = true;
+                        Toast.makeText(getApplicationContext(), "Bienvenido ",Toast.LENGTH_SHORT).show();
+                        attemptLogin();
+                    }
+                }
+                if (estaelnumero == !true)
+                {
+                    Toast.makeText(getApplicationContext(), "Clave Incorrecta ",Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
@@ -134,55 +145,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-    }
-
-
-    protected class AsyncLogin extends AsyncTask<String,JSONObject,Boolean>
-    {
-        //RestAPI api = new RestAPI();
-        WebServiceRest api = new WebServiceRest();
-        boolean userAuth = false;
-        @Override
-        protected Boolean doInBackground(String... params) {
-            try
-            {
-                // Call the User Authentication Method in API
-                //Llama el método de autentificación del usuario en API
-                JSONObject jsonObj = api.UserAuthentication(params[0], params[1]);
-                //Parse the JSON Object to boolean
-                //Convierte el objeto JSON a boleano
-                JSONParser parser = new JSONParser();
-                userAuth = parser.parUserAu(jsonObj);
-                //userName=params[0];
-            }
-            catch (Exception e)
-            {
-                // TODO Auto-generated catch block
-                Log.d("AsyncLogin", e.getMessage());
-                Toast.makeText(getApplicationContext(), "Error deconexión ",Toast.LENGTH_SHORT).show();
-            }
-            return userAuth;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            Toast.makeText(getApplicationContext(), "Por favor espera...",Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        protected void onPostExecute(Boolean result) {
-            if (result) {
-                Intent i = new Intent(getApplicationContext(), PublicacionActivity.class);
-                ///i.putExtra("correo",correoElectronico.getText().toString());
-                startActivity(i);
-                Toast.makeText(getApplicationContext(), "Bienvenido ",Toast.LENGTH_SHORT).show();
-            }
-            else
-            {
-                Toast.makeText(getApplicationContext(), "Correo/Contraseña Incorrectos ",Toast.LENGTH_SHORT).show();
-            }
-        }
     }
 
 
@@ -238,7 +200,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private void attemptLogin()
     {
 
-
         if (mAuthTask != null) {
             return;
         }
@@ -251,7 +212,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
 
-        //Llama a la APIr
+        //Llama a la API
         AsyncLogin async = new AsyncLogin();
         async.execute(email,password);
 
@@ -286,6 +247,54 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(true);
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
+        }
+    }
+
+    protected class AsyncLogin extends AsyncTask<String,JSONObject,Boolean>
+    {
+        //RestAPI api = new RestAPI();
+        WebServiceRest api = new WebServiceRest();
+        boolean userAuth = false;
+        @Override
+        protected Boolean doInBackground(String... params) {
+            try
+            {
+                // Call the User Authentication Method in API
+                //Llama el método de autentificación del usuario en API
+                JSONObject jsonObj = api.UserAuthentication(params[0], params[1]);
+                //Parse the JSON Object to boolean
+                //Convierte el objeto JSON a boleano
+                JSONParser parser = new JSONParser();
+                userAuth = parser.parUserAu(jsonObj);
+                //userName=params[0];
+            }
+            catch (Exception e)
+            {
+                // TODO Auto-generated catch block
+                Log.d("AsyncLogin", e.getMessage());
+                Toast.makeText(getApplicationContext(), "Error de conexión ",Toast.LENGTH_SHORT).show();
+            }
+            return userAuth;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Toast.makeText(getApplicationContext(), "Por favor espera...",Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            if (result) {
+                Intent i = new Intent(getApplicationContext(), ListaPublicacionesUsuariosActivity.class);
+                ///i.putExtra("correo",correoElectronico.getText().toString());
+                startActivity(i);
+                Toast.makeText(getApplicationContext(), "Bienvenido ",Toast.LENGTH_SHORT).show();
+            }
+            else
+            {
+                Toast.makeText(getApplicationContext(), "Correo/Contraseña Incorrectos ",Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

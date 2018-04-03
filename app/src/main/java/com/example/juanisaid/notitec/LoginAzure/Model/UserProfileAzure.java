@@ -1,4 +1,4 @@
-package mx.edu.com.nld.tecnologico.apptecnologico.Login.Model;
+package com.example.juanisaid.notitec.LoginAzure.Model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -51,7 +51,7 @@ public class UserProfileAzure implements Parcelable {
     @SerializedName("userPrincipalName")
     @Expose
     private String userPrincipalName;
-    public final static Parcelable.Creator<UserProfileAzure> CREATOR = new Creator<UserProfileAzure>() {
+    public final static Creator<UserProfileAzure> CREATOR = new Creator<UserProfileAzure>() {
 
 
         @SuppressWarnings({
@@ -70,7 +70,7 @@ public class UserProfileAzure implements Parcelable {
     protected UserProfileAzure(Parcel in) {
         this.odataContext = ((String) in.readValue((String.class.getClassLoader())));
         this.id = ((String) in.readValue((String.class.getClassLoader())));
-        in.readList(this.businessPhones, (java.lang.String.class.getClassLoader()));
+        in.readList(this.businessPhones, (String.class.getClassLoader()));
         this.displayName = ((String) in.readValue((String.class.getClassLoader())));
         this.givenName = ((String) in.readValue((String.class.getClassLoader())));
         this.jobTitle = ((String) in.readValue((String.class.getClassLoader())));
