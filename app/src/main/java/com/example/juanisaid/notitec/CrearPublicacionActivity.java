@@ -95,6 +95,7 @@ public class CrearPublicacionActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
+
                 String departamento = Departamento.getText().toString();
                 String descripcion = Descripcion.getText().toString();
                 String enlace=Enlace.getText().toString();
@@ -105,16 +106,15 @@ public class CrearPublicacionActivity extends AppCompatActivity
 
                 PublicacionModelo userDetail = new PublicacionModelo(departamento,
                         descripcion, enlace,fecha,email);
-
-                if(validarEmail(email)==true) {
-
-                    new AsyncCrearPublicacion().execute(userDetail);
+                new AsyncCrearPublicacion().execute(userDetail);
+                //new WSInsertar().execute(departamento,descripcion,enlace,email);
+                if(validarEmail(email)==true || email == "") {
                     //new WSInsertar().execute(departamento,descripcion,enlace,email);
                     //agregarUsuario();
 
                     //Notificación Push
 
-                    int icono = R.mipmap.ic_launcher;
+                    /*int icono = R.mipmap.ic_launcher;
                     NotificationCompat.Builder mBuilder;
                     mBuilder = new NotificationCompat.Builder(getApplicationContext())
                             //.setContentIntent(pendingIntent)
@@ -133,7 +133,7 @@ public class CrearPublicacionActivity extends AppCompatActivity
                     NotificationManager mNotifyMgr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
                     mNotifyMgr.notify(notificationId, mBuilder.build());
-                    //mBuilder = new NotificationCompat.Builder(getApplicationContext());
+                    //mBuilder = new NotificationCompat.Builder(getApplicationContext());*/
 
                 }
                 else
@@ -171,14 +171,15 @@ public class CrearPublicacionActivity extends AppCompatActivity
 
         @Override
         protected Void doInBackground(PublicacionModelo... params) {
-            RestAPI api = new RestAPI();
+            //RestAPI api = new RestAPI();
+            WebServiceRest api = new WebServiceRest();
             try {
 
                 api.CrearPublicacion(params[0].getDepartamento(), params[0].getDescripcion(), params[0].getEnlace(), params[0].getCorreo() /*,params[0].getFecha(), params[0].getFoto()*/);
 
             } catch (Exception e) {
                 // TODO Auto-generated catch block
-                Log.d("AsyncCreateUser", e.getMessage());
+                Log.d("AsyncCrearPublicacion", e.getMessage());
 
             }
             return null;
@@ -188,6 +189,8 @@ public class CrearPublicacionActivity extends AppCompatActivity
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
+            String departamento = Departamento.getText().toString();
+            String descripcion = Descripcion.getText().toString();
             Intent i=new Intent(getApplicationContext(),ListaPublicacionesUsuariosActivity.class);
             //i.putExtra("correo",Cor);
             startActivity(i);
@@ -195,6 +198,29 @@ public class CrearPublicacionActivity extends AppCompatActivity
            /* Intent i=new Intent(getApplicationContext(),PublicacionActivity.class);
             //i.putExtra("correo",Cor);
             startActivity(i);*/
+
+
+            int icono = R.mipmap.ic_launcher;
+            NotificationCompat.Builder mBuilder;
+            mBuilder = new NotificationCompat.Builder(getApplicationContext())
+                    //.setContentIntent(pendingIntent)
+                    .setSmallIcon(icono)
+                    .setContentTitle(departamento)
+                    .setContentText(descripcion)
+            //.setVibrate(new long[] {100, 250, 100, 500})
+            //.setAutoCancel(true)
+            ;
+
+            Intent intent = new Intent(getApplicationContext(), ListaPublicacionActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            mBuilder.setContentIntent(pendingIntent);
+
+            NotificationManager mNotifyMgr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+            mNotifyMgr.notify(notificationId, mBuilder.build());
+            //mBuilder = new NotificationCompat.Builder(getApplicationContext());
+            finish();
         }
     }
 
@@ -207,9 +233,9 @@ public class CrearPublicacionActivity extends AppCompatActivity
 
             HttpClient httpClient = new DefaultHttpClient();
 
-            HttpPost post = new
-                    HttpPost("http://10.10.21.249/Api/Publicaciones/Publicacion");
+            HttpPost post = new HttpPost("http://192.168.1.71/PublicWebServiceRest1/Api/Publicaciones/Publicacion");
 
+            //HttpPost post = new HttpPost("http://core.itnuevolaredo.edu.mx/notitec/Api/Publicaciones/Publicacion");
             post.setHeader("content-type", "application/json");
 
             try
@@ -241,15 +267,37 @@ public class CrearPublicacionActivity extends AppCompatActivity
             return resul;
         }
 
-        protected void onPostExecute(Boolean result) {
-
+        protected void onPostExecute(Boolean result)
+        {
+            String departamento = Departamento.getText().toString();
+            String descripcion = Descripcion.getText().toString();
             if (result)
             {
                 Intent i=new Intent(getApplicationContext(),ListaPublicacionesUsuariosActivity.class);
                 //i.putExtra("correo",Cor);
                 startActivity(i);
+
+                int icono = R.mipmap.ic_launcher;
+                NotificationCompat.Builder mBuilder;
+                mBuilder = new NotificationCompat.Builder(getApplicationContext())
+                        //.setContentIntent(pendingIntent)
+                        .setSmallIcon(icono)
+                        .setContentTitle(departamento)
+                        .setContentText(descripcion)
+                //.setVibrate(new long[] {100, 250, 100, 500})
+                //.setAutoCancel(true)
+                ;
+
+                Intent intent = new Intent(getApplicationContext(), ListaPublicacionActivity.class);
+                PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                mBuilder.setContentIntent(pendingIntent);
+
+                NotificationManager mNotifyMgr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+                mNotifyMgr.notify(notificationId, mBuilder.build());
+                //mBuilder = new NotificationCompat.Builder(getApplicationContext());
             }
         }
     }
-
 }

@@ -139,7 +139,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     protected class AsyncLogin extends AsyncTask<String,JSONObject,Boolean>
     {
-        RestAPI api = new RestAPI();
+        //RestAPI api = new RestAPI();
+        WebServiceRest api = new WebServiceRest();
         boolean userAuth = false;
         @Override
         protected Boolean doInBackground(String... params) {

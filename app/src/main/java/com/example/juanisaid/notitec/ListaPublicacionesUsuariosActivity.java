@@ -33,7 +33,8 @@ public class ListaPublicacionesUsuariosActivity extends AppCompatActivity
     Context context;
     ArrayAdapter<String> adapter;
     ArrayList<String> data;
-    String cadenaApi = "http://10.10.21.249/RealWebServiceRest/Api/Publicaciones";
+    //String cadenaApi = "http://192.168.1.71/PublicWebServiceRest1/Api/Publicaciones";
+    String cadenaApi = "http://core.itnuevolaredo.edu.mx/notitec/Api/Publicaciones";
     String correoCopiado;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

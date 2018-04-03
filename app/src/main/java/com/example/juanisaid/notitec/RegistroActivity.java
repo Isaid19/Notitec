@@ -134,12 +134,13 @@ public class RegistroActivity extends AppCompatActivity implements LoaderCallbac
         });
     }
 
-    protected class AsyncCrearUsuario extends AsyncTask<Usuario, Void,Void>
+    protected class AsyncCreateUser extends AsyncTask<Usuario, Void,Void>
     {
 
         @Override
         protected Void doInBackground(Usuario... params) {
-            RestAPI api = new RestAPI();
+            //RestAPI api = new RestAPI();
+            WebServiceRest api = new WebServiceRest();
             try {
 
                 api.CrearNuevoUsuario(params[0].getCorreoElectronico(),
@@ -149,7 +150,7 @@ public class RegistroActivity extends AppCompatActivity implements LoaderCallbac
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 Log.d("AsyncCreateUser", e.getMessage());
-
+                Toast.makeText(getApplicationContext(), "Error: "+e.getMessage(),Toast.LENGTH_SHORT).show();
             }
             return null;
         }
@@ -161,7 +162,7 @@ public class RegistroActivity extends AppCompatActivity implements LoaderCallbac
             Intent i = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(i);
             Toast.makeText(getApplicationContext(), "Usuario Registrado.",Toast.LENGTH_SHORT).show();
-
+            finish();
         }
     }
 
@@ -218,17 +219,19 @@ public class RegistroActivity extends AppCompatActivity implements LoaderCallbac
         if (mAuthTask != null) {
             return;
         }
-        String nombreUsuario, departameto;
+        String nombreUsuario, departamento;
         // Reset errors.
         mEmailView.setError(null);
         mPasswordView.setError(null);
         nombreUsuario = Nombreusuario.getText().toString();
-        departameto = Departamento.getText().toString();
+        departamento = Departamento.getText().toString();
         // Store values at the time of the login attempt.
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
 
+        Usuario user = new Usuario(email,nombreUsuario,password,departamento);
 
+        new  AsyncCreateUser().execute(user);
 
 
         boolean cancel = false;
