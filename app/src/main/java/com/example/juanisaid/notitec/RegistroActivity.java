@@ -139,7 +139,8 @@ public class RegistroActivity extends AppCompatActivity implements LoaderCallbac
 
         @Override
         protected Void doInBackground(Usuario... params) {
-            RestAPI api = new RestAPI();
+            WebServiceRest api = new WebServiceRest();
+            //RestAPI api = new RestAPI();
             try {
 
                 api.CrearNuevoUsuario(params[0].getCorreoElectronico(),
@@ -161,7 +162,7 @@ public class RegistroActivity extends AppCompatActivity implements LoaderCallbac
             Intent i = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(i);
             Toast.makeText(getApplicationContext(), "Usuario Registrado.",Toast.LENGTH_SHORT).show();
-
+            finish();
         }
     }
 
@@ -228,8 +229,9 @@ public class RegistroActivity extends AppCompatActivity implements LoaderCallbac
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
 
+        Usuario user = new Usuario(nombreUsuario,email,password,departameto);
 
-
+        new AsyncCrearUsuario().execute(user);
 
         boolean cancel = false;
         View focusView = null;

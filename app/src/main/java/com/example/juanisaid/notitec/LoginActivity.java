@@ -66,7 +66,32 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView, Clave;
     private View mProgressView;
     private View mLoginFormView;
-    private Button registrar, alumno, acerca;
+    private Button registrar, alumno, acerca; String[] claves =
+            {
+                    "24447",
+                    "67312",
+                    "33979",
+                    "01527",
+                    "25641",
+                    "08662",
+                    "18823",
+                    "76780",
+                    "60389",
+                    "45409",
+                    "85865",
+                    "25581",
+                    "96178",
+                    "80958",
+                    "81726",
+                    "40166",
+                    "91734",
+                    "85242",
+                    "81394",
+                    "74744",
+                    "07250",
+                    "57499",
+                    "83615",
+                    "41782"}; boolean estaelnumero=false;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -82,6 +107,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mPasswordView = (EditText) findViewById(R.id.password);
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+
 //        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 //            @Override
 //            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -97,18 +124,23 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(), ListaPublicacionesUsuariosActivity.class);
+                /*Intent i = new Intent(getApplicationContext(), ListaPublicacionesUsuariosActivity.class);
                 ///i.putExtra("correo",correoElectronico.getText().toString());
                 startActivity(i);
-                Toast.makeText(getApplicationContext(), "Bienvenido ",Toast.LENGTH_SHORT).show();
-                 /*if(Clave.getText().toString()=="1234")
-                 {
-                     attemptLogin();
-                 }
-                 else
-                     {
-                         Toast.makeText(getApplicationContext(), "Clave Incorrecta ",Toast.LENGTH_SHORT).show();
-                     }*/
+                Toast.makeText(getApplicationContext(), "Bienvenido ",Toast.LENGTH_SHORT).show();*/
+
+                int x;
+                for (x=0;x<claves.length;x++) {
+                    if (claves[x].equals(Clave.getText().toString()))
+                    {
+                        attemptLogin();
+                        estaelnumero = true;
+                    }
+                }
+                if(estaelnumero == !true)
+                {
+                    Toast.makeText(getApplicationContext(), "Clave Incorrecta ", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -139,7 +171,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     protected class AsyncLogin extends AsyncTask<String,JSONObject,Boolean>
     {
-        RestAPI api = new RestAPI();
+        WebServiceRest api = new WebServiceRest();
+        //RestAPI api = new RestAPI();
         boolean userAuth = false;
         @Override
         protected Boolean doInBackground(String... params) {
@@ -172,7 +205,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         @Override
         protected void onPostExecute(Boolean result) {
             if (result) {
-                Intent i = new Intent(getApplicationContext(), PublicacionActivity.class);
+                Intent i = new Intent(getApplicationContext(), ListaPublicacionesUsuariosActivity.class);
                 ///i.putExtra("correo",correoElectronico.getText().toString());
                 startActivity(i);
                 Toast.makeText(getApplicationContext(), "Bienvenido ",Toast.LENGTH_SHORT).show();

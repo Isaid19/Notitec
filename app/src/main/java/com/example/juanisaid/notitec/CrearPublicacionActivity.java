@@ -105,41 +105,22 @@ public class CrearPublicacionActivity extends AppCompatActivity
 
                 PublicacionModelo userDetail = new PublicacionModelo(departamento,
                         descripcion, enlace,fecha,email);
+                new AsyncCrearPublicacion().execute(userDetail);
+                /*if(validarEmail(email)==true) {
 
-                if(validarEmail(email)==true) {
 
-                    new AsyncCrearPublicacion().execute(userDetail);
                     //new WSInsertar().execute(departamento,descripcion,enlace,email);
                     //agregarUsuario();
 
                     //Notificación Push
 
-                    int icono = R.mipmap.ic_launcher;
-                    NotificationCompat.Builder mBuilder;
-                    mBuilder = new NotificationCompat.Builder(getApplicationContext())
-                            //.setContentIntent(pendingIntent)
-                            .setSmallIcon(icono)
-                            .setContentTitle(departamento)
-                            .setContentText(descripcion)
-                    //.setVibrate(new long[] {100, 250, 100, 500})
-                    //.setAutoCancel(true)
-                    ;
 
-                    Intent intent = new Intent(getApplicationContext(), AlumnoActivity.class);
-                    PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-                    mBuilder.setContentIntent(pendingIntent);
-
-                    NotificationManager mNotifyMgr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-
-                    mNotifyMgr.notify(notificationId, mBuilder.build());
-                    //mBuilder = new NotificationCompat.Builder(getApplicationContext());
 
                 }
                 else
                 {
                     Toast.makeText(getApplicationContext(),"Correo no aceptado",Toast.LENGTH_LONG).show();
-                }
+                }*/
 
 
             }
@@ -171,7 +152,9 @@ public class CrearPublicacionActivity extends AppCompatActivity
 
         @Override
         protected Void doInBackground(PublicacionModelo... params) {
-            RestAPI api = new RestAPI();
+
+            WebServiceRest api = new WebServiceRest();
+            //RestAPI api = new RestAPI();
             try {
 
                 api.CrearPublicacion(params[0].getDepartamento(), params[0].getDescripcion(), params[0].getEnlace(), params[0].getCorreo() /*,params[0].getFecha(), params[0].getFoto()*/);
@@ -191,10 +174,35 @@ public class CrearPublicacionActivity extends AppCompatActivity
             Intent i=new Intent(getApplicationContext(),ListaPublicacionesUsuariosActivity.class);
             //i.putExtra("correo",Cor);
             startActivity(i);
+
             ///new AsyncCrearPublicacion().execute();
            /* Intent i=new Intent(getApplicationContext(),PublicacionActivity.class);
             //i.putExtra("correo",Cor);
             startActivity(i);*/
+
+            String departamento = Departamento.getText().toString();
+            String descripcion = Descripcion.getText().toString();
+            int icono = R.mipmap.ic_launcher;
+            NotificationCompat.Builder mBuilder;
+            mBuilder = new NotificationCompat.Builder(getApplicationContext())
+                    //.setContentIntent(pendingIntent)
+                    .setSmallIcon(icono)
+                    .setContentTitle(departamento)
+                    .setContentText(descripcion)
+            //.setVibrate(new long[] {100, 250, 100, 500})
+            //.setAutoCancel(true)
+            ;
+
+            Intent intent = new Intent(getApplicationContext(), AlumnoActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            mBuilder.setContentIntent(pendingIntent);
+
+            NotificationManager mNotifyMgr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+            mNotifyMgr.notify(notificationId, mBuilder.build());
+            //mBuilder = new NotificationCompat.Builder(getApplicationContext());
+            finish();
         }
     }
 

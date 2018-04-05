@@ -22,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 //import com.loopj.android.http.HttpGet;
@@ -32,6 +33,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,12 +42,15 @@ public class ListaPublicacionActivity extends AppCompatActivity
 {
     private ListView Lv;
     private Button EnviarCorreo;
+    private TextView tvPag;
     Context context;
     ArrayAdapter<String> adapter;
     ArrayList<String> data;
-    String cadenaApi = "http://10.10.21.249/RealWebServiceRest/Api/Publicaciones";
+    String cadenaApi = "http://core.itnuevolaredo.edu.mx/notitec/Api/Publicaciones";
+    //String cadenaApi = "http://192.168.1.76/PublicWebServiceRest1/Api/Publicaciones";
     String correoCopiado;
-//https://geekytheory.com/trabajando-con-json-en-android/
+    String pagina;
+    String textoPagina;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +58,7 @@ public class ListaPublicacionActivity extends AppCompatActivity
 
         //data = new ArrayList<String>();
         Lv = (ListView) findViewById(R.id.lv);
+        tvPag = (TextView) findViewById(R.id.tvPagina);
         context = this;
 
         //adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, data);
@@ -62,6 +68,8 @@ public class ListaPublicacionActivity extends AppCompatActivity
         //WSListar tarea =
                 new WSListar().execute();
         //tarea.execute();
+
+
 
         EnviarCorreo = (Button) findViewById(R.id.btnEnviarCorreo);
 
@@ -99,6 +107,7 @@ public class ListaPublicacionActivity extends AppCompatActivity
 		private String[] notas;
         public List<String> notasListaCorreos = new ArrayList<String>();
         public List<String> notasListaPub = new ArrayList<String>();
+        public List<String> notasListaPagina = new ArrayList<String>();
 	    protected Boolean doInBackground(String... params)
 	    {
 	    	boolean resul = true;
@@ -113,6 +122,7 @@ public class ListaPublicacionActivity extends AppCompatActivity
 	        	notas = new String[respJSON.length()];
                 notasListaCorreos = new ArrayList<String>(respJSON.length());
                 notasListaPub = new ArrayList<String>(respJSON.length());
+                notasListaPagina = new ArrayList<String>(respJSON.length());
 	        	for(int i=0; i<respJSON.length(); i++)
 	        	{
 	        		JSONObject obj = respJSON.getJSONObject(i);
@@ -124,6 +134,7 @@ public class ListaPublicacionActivity extends AppCompatActivity
 	        		notas[i] = "\n" + depa + "\n"+ "\n" + desc + "\n"+ "\n" + link + "\n"+ "\n" + fecha + "\n"+ "\n" + correo +"\n";
                     notasListaPub.add(""+desc);
                     notasListaCorreos.add(""+ correo);
+                    notasListaPagina.add(""+link);
                     //correoCopiado = notasListaCorreos.set(i,correo);
 	        	}
 	        }
@@ -151,8 +162,11 @@ public class ListaPublicacionActivity extends AppCompatActivity
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id)
                     {
-                        Toast.makeText(ListaPublicacionActivity.this, "Copiado: " + notasListaCorreos.get(position), Toast.LENGTH_LONG).show();
+                        Toast.makeText(ListaPublicacionActivity.this, "Correo: " + notasListaCorreos.get(position), Toast.LENGTH_LONG).show();
                         correoCopiado = notasListaCorreos.get(position);
+                        pagina = notasListaPagina.get(position);
+                        textoPagina = "Visitar página: "+ pagina;
+                        tvPag.setText(textoPagina);
                     }
                 });
 	    	}
