@@ -63,7 +63,7 @@ public class ListaPublicacionActivity extends AppCompatActivity
 
         //adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, data);
        // Lv.setAdapter(adapter);
-        Toast.makeText(this,"Loading Please Wait..",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,"Cargando por favor espere...",Toast.LENGTH_SHORT).show();
        // new AsyncLoadPub().execute();
         //WSListar tarea =
                 new WSListar().execute();
@@ -143,7 +143,7 @@ public class ListaPublicacionActivity extends AppCompatActivity
 	        {
 	        	Log.e("ServicioRest","Error!", ex);
 	        	resul = false;
-                Toast.makeText(getApplicationContext(),"Error desde el AsyncTask" + ex.getMessage(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"Error " + ex.getMessage(),Toast.LENGTH_SHORT).show();
 	        }
 	        return resul;
 	    }
@@ -172,43 +172,4 @@ public class ListaPublicacionActivity extends AppCompatActivity
 	    	}
 	    }
 	}
-
-/*
-    protected class AsyncLoadPub extends AsyncTask<Void, JSONObject, ArrayList<AlumnoModelo>> {
-        ArrayList<AlumnoModelo> deptTable = null;
-
-        @Override
-        protected ArrayList<AlumnoModelo> doInBackground(Void... params) {
-            // TODO Auto-generated method stub
-
-            RestAPI api = new RestAPI();
-            try
-            {
-                JSONObject jsonObj = api.GetPublicacion();
-                JSONParser parser = new JSONParser();
-                deptTable = parser.parseDepa(jsonObj);
-            } catch (Exception e) {
-                // TODO Auto-generated catch block
-                Log.d("AsyncLoadPub", e.getMessage());
-                Toast.makeText(getApplicationContext(),"Error desde el AsyncTask",Toast.LENGTH_SHORT).show();
-            }
-
-            return deptTable;
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<AlumnoModelo> result) {
-            // TODO Auto-generated method stub
-
-            for (int i = 0; i < result.size(); i++) {
-                data.add(result.get(i).getDepartamento()
-                        + "\n" + result.get(i).getDescripcion()
-                        + "\n" + result.get(i).getEnlace()
-                        + "\n" + result.get(i).getFecha()
-                        + "\n" + result.get(i).getCorreo());
-            }
-            adapter.notifyDataSetChanged();
-            Toast.makeText(context,"Loading Completed",Toast.LENGTH_SHORT).show();
-        }
-    }*/
 }

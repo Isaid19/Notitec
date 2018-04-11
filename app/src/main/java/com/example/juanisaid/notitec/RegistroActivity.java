@@ -229,7 +229,7 @@ public class RegistroActivity extends AppCompatActivity implements LoaderCallbac
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
 
-        Usuario user = new Usuario(nombreUsuario,email,password,departameto);
+        Usuario user = new Usuario(email,nombreUsuario,password,departameto);
 
         new AsyncCrearUsuario().execute(user);
 

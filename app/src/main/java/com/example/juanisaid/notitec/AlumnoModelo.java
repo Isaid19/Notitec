@@ -33,7 +33,6 @@ public class AlumnoModelo extends PublicacionModelo
     public AlumnoModelo(String error, Object o, Object o1) {
     }
 /*
-
     public List leerArrayAlumnos(JsonReader reader) throws IOException {
         // Lista temporal
         ArrayList animales = new ArrayList();

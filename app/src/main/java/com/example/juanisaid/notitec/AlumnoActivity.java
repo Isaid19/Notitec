@@ -139,8 +139,8 @@ public class AlumnoActivity extends AppCompatActivity {
 
         @Override
         protected List<AlumnoModelo> doInBackground(Void... params) {
-
-            RestAPI api = new RestAPI();
+            WebServiceRest api = new WebServiceRest();
+            //RestAPI api = new RestAPI();
             try {
 
                 JSONObject jsonObj = api.GetPublicacion();
@@ -199,7 +199,8 @@ public class AlumnoActivity extends AppCompatActivity {
          protected String doInBackground(Void... params)
          {
              List<AlumnoModelo> alumnoModelo = null;
-             RestAPI api = new RestAPI();
+             WebServiceRest api = new WebServiceRest();
+             //RestAPI api = new RestAPI();
              try {
 
                  JSONObject jsonObj = api.GetPublicacion();
@@ -339,7 +340,8 @@ public class AlumnoActivity extends AppCompatActivity {
     }
 
     public List<AlumnoModelo> obtenerPublicacionPorApi() {
-        RestAPI api = new RestAPI();
+        //RestAPI api = new RestAPI();
+        WebServiceRest api = new WebServiceRest();
         try {
             JSONObject jsonObj = api.GetPublicacion();
             JSONParser parser = new JSONParser();

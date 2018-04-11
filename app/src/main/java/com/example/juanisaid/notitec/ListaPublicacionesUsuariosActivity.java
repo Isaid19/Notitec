@@ -57,6 +57,7 @@ public class ListaPublicacionesUsuariosActivity extends AppCompatActivity
                         .setAction("Action", null).show();*/
                 Intent intent = new Intent(getApplicationContext(), CrearPublicacionActivity.class);
                 startActivity(intent);
+
             }
         });
     }
@@ -97,7 +98,7 @@ public class ListaPublicacionesUsuariosActivity extends AppCompatActivity
             {
                 Log.e("ServicioRest","Error!", ex);
                 resul = false;
-                Toast.makeText(getApplicationContext(),"Error desde el AsyncTask" + ex.getMessage(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"Error: " + ex.getMessage(),Toast.LENGTH_SHORT).show();
             }
             return resul;
         }

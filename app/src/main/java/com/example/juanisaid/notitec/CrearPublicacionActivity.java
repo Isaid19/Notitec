@@ -23,31 +23,57 @@ import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class CrearPublicacionActivity extends AppCompatActivity
 {
 
-    private Button Enviar,Examinar;
+
+    private Button Enviar;
     private EditText Descripcion, Enlace, Correo;
     //private ImageView Foto;
     private Spinner spin;
     private TextView Departamento;
     int notificationId = 12345;
+
+    OkHttpClient mClient = new OkHttpClient();
+    String refreshedToken = FirebaseInstanceId.getInstance().getToken();//add your user refresh tokens who are logged in with firebase.
+    JSONArray jsonArray = new JSONArray();
 
 
     @Override
@@ -101,10 +127,10 @@ public class CrearPublicacionActivity extends AppCompatActivity
                 String fecha = getDateTime();
                 String email = Correo.getText().toString();
                 //email = dato;
-                //int foto=Foto.getImageAlpha();
 
                 PublicacionModelo userDetail = new PublicacionModelo(departamento,
                         descripcion, enlace,fecha,email);
+
                 new AsyncCrearPublicacion().execute(userDetail);
                 /*if(validarEmail(email)==true) {
 
@@ -147,8 +173,14 @@ public class CrearPublicacionActivity extends AppCompatActivity
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date(); return dateFormat.format(date); }
 
+
     protected class AsyncCrearPublicacion extends AsyncTask<PublicacionModelo, Void,Void>
     {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Toast.makeText(getApplicationContext(), "Publicando mensaje... ", Toast.LENGTH_SHORT).show();
+        }
 
         @Override
         protected Void doInBackground(PublicacionModelo... params) {
@@ -172,92 +204,83 @@ public class CrearPublicacionActivity extends AppCompatActivity
             super.onPostExecute(aVoid);
 
             Intent i=new Intent(getApplicationContext(),ListaPublicacionesUsuariosActivity.class);
-            //i.putExtra("correo",Cor);
             startActivity(i);
 
-            ///new AsyncCrearPublicacion().execute();
-           /* Intent i=new Intent(getApplicationContext(),PublicacionActivity.class);
-            //i.putExtra("correo",Cor);
-            startActivity(i);*/
+            jsonArray.put(refreshedToken);
+            //jsonArray.put("/topics/all");
 
             String departamento = Departamento.getText().toString();
             String descripcion = Descripcion.getText().toString();
-            int icono = R.mipmap.ic_launcher;
-            NotificationCompat.Builder mBuilder;
-            mBuilder = new NotificationCompat.Builder(getApplicationContext())
-                    //.setContentIntent(pendingIntent)
-                    .setSmallIcon(icono)
-                    .setContentTitle(departamento)
-                    .setContentText(descripcion)
-            //.setVibrate(new long[] {100, 250, 100, 500})
-            //.setAutoCancel(true)
-            ;
+            sendMessage(/*jsonArray,*/departamento,descripcion,"....");
+            Toast.makeText(getApplicationContext(), "Mensaje publicado.", Toast.LENGTH_SHORT).show();
 
-            Intent intent = new Intent(getApplicationContext(), AlumnoActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-            mBuilder.setContentIntent(pendingIntent);
-
-            NotificationManager mNotifyMgr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-
-            mNotifyMgr.notify(notificationId, mBuilder.build());
-            //mBuilder = new NotificationCompat.Builder(getApplicationContext());
             finish();
         }
     }
 
-    ///Otra clase para insertar las publicaciones
-    private class WSInsertar extends AsyncTask<String,Integer,Boolean> {
 
-        protected Boolean doInBackground(String... params) {
 
-            boolean resul = true;
+    public void sendMessage(/*final JSONArray recipients, */final String title, final String body, final String message)
+    {
+        new AsyncTask<String, String, String>() {
+            @Override
+            protected String doInBackground(String... params) {
+                try {
+                    JSONObject root = new JSONObject();
+                    JSONObject notification = new JSONObject();
+                    notification.put("body", body);
+                    notification.put("title", title);
 
-            HttpClient httpClient = new DefaultHttpClient();
-
-            HttpPost post = new
-                    HttpPost("http://10.10.21.249/Api/Publicaciones/Publicacion");
-
-            post.setHeader("content-type", "application/json");
-
-            try
-            {
-                //Construimos el objeto cliente en formato JSON
-                JSONObject dato = new JSONObject();
-
-                dato.put("Departamento", params[0]);
-                dato.put("Descripcion", params[1]);
-                dato.put("Enlace", params[2]);
-                dato.put("Fecha", params[3]);
-                dato.put("CorreoElectronico", params[4]);
-
-                StringEntity entity = new StringEntity(dato.toString());
-                post.setEntity(entity);
-
-                HttpResponse resp = httpClient.execute(post);
-                String respStr = EntityUtils.toString(resp.getEntity());
-
-                if(!respStr.equals("true"))
-                    resul = false;
-            }
-            catch(Exception ex)
-            {
-                Log.e("ServicioRest","Error!", ex);
-                resul = false;
+                    JSONObject data = new JSONObject();
+                    data.put("message", message);
+                    //root.put("registration_ids", recipients);
+                    root.put("to","/topics/all");
+                    root.put("notification", notification);
+                    root.put("data", data);
+                    String result = postToFCM(root.toString());
+                    Log.d("Main Activity", "Result: " + result);
+                    return result;
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                return null;
             }
 
-            return resul;
-        }
-
-        protected void onPostExecute(Boolean result) {
-
-            if (result)
-            {
-                Intent i=new Intent(getApplicationContext(),ListaPublicacionesUsuariosActivity.class);
-                //i.putExtra("correo",Cor);
-                startActivity(i);
+            @Override
+            protected void onPostExecute(String result) {
+                try {
+                    JSONObject resultJson = new JSONObject(result);
+                    int success, failure;
+                    success = resultJson.getInt("success");
+                    failure = resultJson.getInt("failure");
+                    //Toast.makeText(getApplicationContext(), "Message Success: " + success + "Message Failed: " + failure, Toast.LENGTH_LONG).show();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    //Toast.makeText(getApplicationContext(), "Message Failed, Unknown error occurred.", Toast.LENGTH_LONG).show();
+                }
             }
-        }
+        }.execute();
     }
+
+    String postToFCM(String bodyString) throws IOException
+    {
+        //String serverKey= "AAAAAjxlJag:APA91bGdphBQfeP8VrGG9AIOLB4U2kXeJB3mByq-rIbJUzPqJwK01V_h6NFlgrxIWqKNvISdfYfFfeW0nYSHbxadA9cV9B3zMOzAlOmeGBvBty2qFaVxOxCZ5mqFm-DOJdUo63Lurltm";
+        String serverKey = "AAAAVZiwF9E:APA91bHfdaWlFy5K5hrL6yrwWfTBsGp2Bhay-wX15c2wxP7iQYx8vosJXrpPMlxTi5wWECakRS4XGavBHqYr2GT_9Pnj_2KYa_Bug3p95mZa1C2uuikD1nUjdKhvj1pfDJr13Sbve8z2";
+
+        final String FCM_MESSAGE_URL = "https://fcm.googleapis.com/fcm/send";
+        final MediaType JSON
+                = MediaType.parse("application/json; charset=utf-8");
+
+        RequestBody body = RequestBody.create(JSON, bodyString);
+        Request request = new Request.Builder()
+                .url(FCM_MESSAGE_URL)
+                .post(body)
+                .addHeader("Authorization", "key=" + serverKey)
+                .build();
+        Response response = mClient.newCall(request).execute();
+        return response.body().string();
+    }
+
+
 
 }

@@ -57,7 +57,8 @@ public class PublicacionActivity extends AppCompatActivity {
         protected List<PublicacionModelo> doInBackground(Void... params)
         {
             List<PublicacionModelo> publicacionModelo = null;
-            RestAPI api = new RestAPI();
+            //RestAPI api = new RestAPI();
+            WebServiceRest api = new WebServiceRest();
             try {
 
                 JSONObject jsonObj = api.GetPublicacion();

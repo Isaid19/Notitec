@@ -21,8 +21,8 @@ import org.json.JSONObject;
 import org.json.JSONArray;
 
 public class WebServiceRest {
-    private final String urlString = "http://192.168.1.76/PublicWebServiceRest1/Handler1.ashx";
-
+    //private final String urlString = "http://10.10.21.181/PublicWebServiceRest1/Handler1.ashx";
+    private final String urlString = "http://core.itnuevolaredo.edu.mx/notitec/Handler1.ashx";
     private static String convertStreamToUTF8String(InputStream stream) throws IOException {
 	    String result = "";
 	    StringBuilder sb = new StringBuilder();
